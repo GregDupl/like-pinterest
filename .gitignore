@@ -14,3 +14,7 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> custom env vars ###
+/public/uploads/
+###< custom env vars ###

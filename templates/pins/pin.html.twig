@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<div class="row">
+  <div class="col-4 mx-auto">
+    {% if pin.imageName %}
+    <div class="imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover">
+
+    </div>
+    {%endif%}
+
+    <h1>{{ pin.title }}</h1>
+
+    <p>{{ pin.description }}</p>
+
+    <p> {{ pin.createdAt|date('d-m-Y à H:i:s') }}
+      {% if pin.updatedAt != pin.createdAt %}
+      - mis à jour le : {{ pin.updatedAt|date('d-m-Y à H:i:s') }}
+    {% endif %}
+
+  </p>
+  <a href="{{ path('pins_edit', {id : pin.id}) }}"> Edit pin {{ pin.id }} |</a>
+  <a href="#" onclick="event.preventDefault(); confirm('Are you sure ?') &&
+  document.getElementById('js-pin-delete-form').submit();"> Delete</a>
+
+  <form id="js-pin-delete-form" action="{{path('pins_delete', {id : pin.id}) }}" method="post" style="display:none;">
+    <input type="hidden" name="_token" value="{{ csrf_token('pin_deletion_' ~ pin.id) }}">
+    <input type="hidden" name="_method" value="DELETE">
+  </form>
+
+  </div>
+</div>
+
+
+{% endblock %}

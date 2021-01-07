@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PinsController!{% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="mb-4 col-md-12">
+    {% if pins|length <= 1 %}
+    <h1>{{ pins|length }} PIN</h1>
+    {% elseif pins|length > 1 %}
+    <h1>{{ pins|length }} PINS</h1>
+    {% endif %}
+  </div>
+</div>
+<div class="row">
+  {% for pin in pins %}
+  <article class="col-md-4">
+    <div class="mb-3 imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover">
+    </div>
+    <h2><a href="{{ path('pins_show', {id:pin.id}) }}">{{ pin.title }}</a></h2>
+
+    <p>{{pin.description|u.truncate(15, '...')}}</p>
+
+    <p> {{ pin.createdAt|date('d-m-Y à H:i:s') }}
+      {% if pin.updatedAt != pin.createdAt %}
+      - mis à jour le : {{pin.updatedAt|date('d-m-Y à H:i:s')}}
+      {% endif %}
+    </p>
+  </article>
+  <hr>
+  {% endfor %}
+</div>
+
+{% endblock %}
