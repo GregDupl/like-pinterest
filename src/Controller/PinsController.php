@@ -31,8 +31,6 @@ class PinsController extends AbstractController
      */
     public function show(PinRepository $pinRepo, $id): Response
     {
-      #$pinRepo = $this->getDoctrine()->getRepository(Pin::class);
-
       $pin = $pinRepo->find($id);
 
       return $this->render('pins/pin.html.twig',[
@@ -52,12 +50,15 @@ class PinsController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-           $em->persist($pin);
-           $em->flush();
 
-           $this->addFlash('success', 'Pin successfully created!');
+          $pin = $form->getData();
 
-           return $this->redirectToRoute('home');
+          $em->persist($pin);
+          $em->flush();
+
+          $this->addFlash('success', 'Pin successfully created !');
+
+          return $this->redirectToRoute('home');
        }
 
       else {
@@ -74,6 +75,7 @@ class PinsController extends AbstractController
     {
       $pin = $pinRepo->find($id);
 
+
       $form = $this->createForm(PinType::class, $pin, [
           'method' => 'PUT'
       ]);
@@ -81,9 +83,11 @@ class PinsController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
+          $pin = $form->getData();
+
           $em->flush();
 
-          $this->addFlash('success', 'Pin successfully updated!');
+          $this->addFlash('success', 'Pin successfully updated !');
 
           return $this->redirectToRoute('home');
       }
@@ -100,7 +104,6 @@ class PinsController extends AbstractController
      */
     public function delete(Request $request, $id, PinRepository $pinRepo, EntityManagerInterface $em): Response
     {
-      
       $pin = $pinRepo->find($id);
 
       if ($this->isCsrfTokenValid('pin_deletion_'. $pin->getId(), $request->request->get('_token'))) {

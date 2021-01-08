@@ -3,32 +3,41 @@
 {% block title %}Hello PinsController!{% endblock %}
 
 {% block body %}
-<div class="row">
-  <div class="mb-4 col-md-12">
-    {% if pins|length <= 1 %}
-    <h1>{{ pins|length }} PIN</h1>
-    {% elseif pins|length > 1 %}
-    <h1>{{ pins|length }} PINS</h1>
+  <div class="row">
+    {% if pins|length > 0 %}
+
+        <div class="mb-4 col-md-12">
+          {% if pins|length <= 1 %}
+          <h1>{{ pins|length }} PIN</h1>
+          {% elseif pins|length > 1 %}
+          <h1>{{ pins|length }} PINS</h1>
+          {% endif %}
+        </div>
+      </div>
+
+      {% for row in pins|batch(3) %}
+        <div class="row mb-5">
+
+          {% for pin in row %}
+            <div class="col-md-4">
+              <article class="bg-white rounded shadow">
+                <div class="overflow-hidden">
+                  <div class="imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover"></div>
+                </div>
+                <h2 class="h5 pl-3 pt-3">
+                  <a href="{{ path('pins_show', {id:pin.id}) }}" class="text-secondary text-decoration-none ">{{ pin.title }}</a>
+                </h2>
+                <p class="text-muted pb-3 pl-3">
+                  <small>Submitted by [OWNER FULL NAME]</small>
+                </p>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-md-12 text-center">
+        <h1 class="my-5"> No pins yet ! Sorry ! </h1>
+      </div>
     {% endif %}
-  </div>
-</div>
-<div class="row">
-  {% for pin in pins %}
-  <article class="col-md-4">
-    <div class="mb-3 imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover">
-    </div>
-    <h2><a href="{{ path('pins_show', {id:pin.id}) }}">{{ pin.title }}</a></h2>
-
-    <p>{{pin.description|u.truncate(15, '...')}}</p>
-
-    <p> {{ pin.createdAt|date('d-m-Y à H:i:s') }}
-      {% if pin.updatedAt != pin.createdAt %}
-      - mis à jour le : {{pin.updatedAt|date('d-m-Y à H:i:s')}}
-      {% endif %}
-    </p>
-  </article>
-  <hr>
-  {% endfor %}
-</div>
-
 {% endblock %}

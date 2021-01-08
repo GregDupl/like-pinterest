@@ -16,13 +16,17 @@ class PinType extends AbstractType
     {
         $builder
             ->add('imageFile', VichImageType::class, [
-              'label' => 'images JPG or PNG',
+              'label' => 'Images JPG or PNG',
               'required' => false,
               'allow_delete' => true,
               'download_uri' => false,
             ])
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
+            ->add('title', TextType::class, [
+              'label' => 'Titre',
+            ])
+            ->add('description', TextareaType::class, [
+              'label' => 'Description',
+            ])
         ;
     }
 

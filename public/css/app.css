@@ -23,6 +23,11 @@ html, body{
 }
 
 .imgshow{
-  height: 25rem;
-  border-radius: 2%;
+  height: 20em;
+  border-radius: 1%;
+}
+
+.imgshow:hover{
+  transform: scale(1.075);
+  transition: transform 0.3s ease-out;
 }
