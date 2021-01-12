@@ -1,0 +1,2 @@
+'Invalid credentials.' : 'Email or password invalid'
+'Invalid CSRF token.' : 'Oops... Invalid CSRF Token !'
