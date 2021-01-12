@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Pin;
 use App\Form\PinType;
 use App\Repository\PinRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class PinsController extends AbstractController
     public function index(PinRepository $pinRepo): Response
     {
         #$pinRepo = $this->getDoctrine()->getRepository(Pin::class);
-        $pins = $pinRepo->findBy([], ['updatedAt'=> 'DESC']);
+        $pins = $pinRepo->findBy([], ['createdAt'=> 'DESC']);
 
         return $this->render('pins/index.html.twig',[
           'pins' => $pins,
@@ -41,7 +42,7 @@ class PinsController extends AbstractController
     /**
      * @Route("/pins/create", name="pins_create")
      */
-    public function create(Request $request, EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
       $pin = new Pin;
 
@@ -52,6 +53,9 @@ class PinsController extends AbstractController
       if ($form->isSubmitted() && $form->isValid()) {
 
           $pin = $form->getData();
+
+          $john = $userRepo->findOneBy(['email'=>'johndoe@example.com']);
+          $pin->setUser($john);
 
           $em->persist($pin);
           $em->flush();
@@ -102,7 +106,7 @@ class PinsController extends AbstractController
     /**
      * @Route("/pins/delete/{id<[0-9]+>}", name="pins_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, $id, PinRepository $pinRepo, EntityManagerInterface $em): Response
+    public function delete($id, Request $request, PinRepository $pinRepo, EntityManagerInterface $em): Response
     {
       $pin = $pinRepo->find($id);
 

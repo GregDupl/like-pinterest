@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PinsController!{% endblock %}
-
 {% block body %}
   <div class="row">
     {% if pins|length > 0 %}
@@ -35,9 +33,10 @@
           {% endfor %}
         </div>
       {% endfor %}
+
     {% else %}
       <div class="col-md-12 text-center">
-        <h1 class="my-5"> No pins yet ! Sorry ! </h1>
+        <h1 class="my-5"> No pins yet ! <a href="{{ path('pins_create') }}">Be the first </a> ! </h1>
       </div>
     {% endif %}
 {% endblock %}

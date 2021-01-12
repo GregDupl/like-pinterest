@@ -10,8 +10,9 @@
         <div class="imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover"></div>
       </div>
       <h2 class="h5 pl-3 pt-3">
-        <a href="{{ path('pins_show', {id:pin.id}) }}" class="text-secondary text-decoration-none ">{{ pin.title }}</a>
+        <p class="text-secondary text-decoration-none ">{{ pin.title }}</p>
       </h2>
+      <p class="pb-1 px-3 text-break"> {{ pin.description }}</p>
       <p class="text-muted pb-3 px-3">
         <small> Created at {{ pin.createdAt|date('d-m-Y') }} - Submitted by {{ pin.user.fullName }}</small>
       </p>
