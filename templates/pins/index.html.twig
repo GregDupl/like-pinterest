@@ -5,11 +5,9 @@
     {% if pins|length > 0 %}
 
         <div class="mb-4 col-md-12">
-          {% if pins|length <= 1 %}
-          <h1>{{ pins|length }} PIN</h1>
-          {% elseif pins|length > 1 %}
-          <h1>{{ pins|length }} PINS</h1>
-          {% endif %}
+
+          <h1>{{ pins|length }} PIN{% if pins|length > 1 %}S{% endif %}</h1>
+
         </div>
       </div>
 

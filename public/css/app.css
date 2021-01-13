@@ -31,3 +31,7 @@ html, body{
   transform: scale(1.075);
   transition: transform 0.3s ease-out;
 }
+
+.vich-image img{
+  max-width: 100%;
+}
