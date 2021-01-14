@@ -15,7 +15,7 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class)
-            ->add('lastName' TextType::class)
+            ->add('lastName', TextType::class)
             ->add('email', EmailType::class)
         ;
     }
