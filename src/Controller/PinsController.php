@@ -21,7 +21,7 @@ class PinsController extends AbstractController
     {
         #$pinRepo = $this->getDoctrine()->getRepository(Pin::class);
         $pins = $pinRepo->findBy([], ['createdAt'=> 'DESC']);
-
+        
         return $this->render('pins/index.html.twig',[
           'pins' => $pins,
         ]);
@@ -44,6 +44,8 @@ class PinsController extends AbstractController
      */
     public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo): Response
     {
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
       $pin = new Pin;
 
       $form = $this->createForm(PinType::class, $pin);
@@ -78,6 +80,11 @@ class PinsController extends AbstractController
     {
       $pin = $pinRepo->find($id);
 
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+      if ($this->getUser() != $pin->getUser() ) {
+        return $this->redirectToRoute('home');
+      }
 
       $form = $this->createForm(PinType::class, $pin, [
           'method' => 'PUT'
@@ -107,6 +114,11 @@ class PinsController extends AbstractController
      */
     public function delete($id, Request $request, PinRepository $pinRepo, EntityManagerInterface $em): Response
     {
+
+      if ($this->getUser() != $pin->getUser() ) {
+        return $this->redirectToRoute('home');
+      }
+
       $pin = $pinRepo->find($id);
 
       if ($this->isCsrfTokenValid('pin_deletion_'. $pin->getId(), $request->request->get('_token'))) {
