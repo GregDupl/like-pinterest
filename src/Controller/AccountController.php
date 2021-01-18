@@ -10,15 +10,23 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Form\UserFormType;
 use App\Form\ChangePasswordFormType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Repository\PinRepository;
 
 class AccountController extends AbstractController
 {
     /**
      * @Route("/account", name="account")
      */
-    public function show(): Response
+    public function show(PinRepository $pinRepo): Response
     {
-        return $this->render('account/show.html.twig');
+        $user_pin = $pinRepo->findBy(
+          ['user'=>$this->getUser()],
+          ['createdAt'=> 'DESC']
+        );
+
+        return $this->render('account/show.html.twig', [
+          'pins' => $user_pin
+        ]);
     }
 
     /**

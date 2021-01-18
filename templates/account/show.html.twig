@@ -1,19 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} 'Profile' {% endblock %}
+{% block title %} Profile {% endblock %}
 
 {% block body %}
 <div class="row">
-  <div class="col-md-6 mx-auto text-center">
-    <h1 class="mt-5"> Profile </h1>
-    <img src="{{ app.user.gravatar() }}" alt="{{ app.user.fullname }} 's avatar" class="rounded-circle my-5">
-    <p class="lead">{{app.user.email}}</p>
-    <h2>{{app.user.fullname}}</h2>
+  <div class="col-md-4 mx-auto text-center">
+    <div class="pt-5 sticky-top">
+      <h1 class=""> Profile </h1>
+      <img src="{{ app.user.gravatar() }}" alt="{{ app.user.fullname }} 's avatar" class="rounded-circle my-5">
+      <p class="lead">{{app.user.email}}</p>
+      <h2>{{app.user.fullname}}</h2>
 
-    <p>
-      <a href="{{ path('edit_account') }}">Edit account </a> | <a href="{{ path('account_change_password') }}"> Change password </a>
-    </p>
-
+      <p>
+        <a href="{{ path('edit_account') }}">Edit account </a> | <a href="{{ path('account_change_password') }}"> Change password </a>
+      </p>
+    </div>
   </div>
+
+  {% if pins|length > 0%}
+  <div class="col-offset-1 col-md-7">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="my-5 text-center">Your pins</h1>
+      </div>
+    </div>
+      {% for row in pins|batch(2) %}
+        <div class="row mb-5">
+
+          {% for pin in row %}
+            <div class="col-md-6">
+              <article class="bg-white rounded shadow">
+                <div class="overflow-hidden">
+                  <div class="imgshow" style="background: url({{ asset('uploads/pins/' ~ pin.imageName) }}); background-size:cover"></div>
+                </div>
+                <h2 class="h5 pl-3 pt-3">
+                  <a href="{{ path('pins_show', {id:pin.id}) }}" class="text-secondary text-decoration-none ">{{ pin.title }}</a>
+                </h2>
+                <p class="text-muted pb-3 pl-3">
+                  <small>Submitted by {{pin.user.fullName}}</small>
+                </p>
+              </article>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+  </div>
+  {% endif %}
 </div>
 {% endblock %}
